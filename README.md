@@ -4,6 +4,11 @@
 
 # Sandwitcher
 
+[![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.com)
+[![Min SDK](https://img.shields.io/badge/minSdk-24-blue.svg)](https://developer.android.com/about/versions/nougat)
+[![License](https://img.shields.io/badge/license-Apache%202.0-orange.svg)](LICENSE)
+[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/IR0NBYTE/Sandwitcher/issues)
+
 Hook any Java/Kotlin method at runtime on Android. No root needed, no recompilation, just drop the AAR into your project.
 
 Sandwitcher swaps the entry point of any `ArtMethod` at runtime, letting you run your own code before or after the original method. It works on instance methods, static methods, native methods, final classes, private methods, constructors, framework classes -- anything the runtime can call, you can hook.
@@ -100,23 +105,60 @@ Remove the hook when you're done:
 handle.unhook()
 ```
 
-## API
+## Documentation
 
-`Sandwitcher.init(application, config?)` -- call once at startup.
+### Sandwitcher
 
-`Sandwitcher.hook(method, callback)` -- hook a method. Returns a `HookHandle`.
+The main entry point. Call `init` once, then `hook` as many methods as you want.
 
-`Sandwitcher.hook(className, methodName, paramTypes, callback)` -- same thing but resolves the class by name.
+`Sandwitcher.init(application)` sets up the hooking engine. You can pass a `SandwitcherConfig` if you want debug logging:
 
-`Sandwitcher.reset()` -- remove all hooks.
+```kotlin
+Sandwitcher.init(this, SandwitcherConfig(debugLogging = true))
+```
 
-`HookCallback.beforeMethod(param)` -- runs before the original. Return `Continue` or `ReturnEarly(result)`.
+`Sandwitcher.hook(method, callback)` takes a `java.lang.reflect.Method` and a `HookCallback`. Returns a `HookHandle` you can use to remove the hook later.
 
-`HookCallback.afterMethod(param)` -- runs after the original. Read or modify `param.result`.
+`Sandwitcher.hook(className, methodName, parameterTypes, callback)` does the same thing but resolves the class by name at runtime. Useful when you don't have the target class in your classpath.
 
-`HookHandle.unhook()` -- remove this specific hook.
+`Sandwitcher.reset()` removes all active hooks at once.
 
-`MethodHookParam` gives you `method`, `thisObject`, `args`, `result`, and `throwable`.
+### HookCallback
+
+An interface with two methods. Both are optional -- override the ones you need.
+
+`beforeMethod(param)` runs before the original method. You get access to the arguments and can modify them. Return `HookAction.Continue` to let the original run, or `HookAction.ReturnEarly(value)` to skip it and return your own value instead.
+
+`afterMethod(param)` runs after the original method (or after `beforeMethod` if you returned early). You can read the return value from `param.result` and change it if you want.
+
+### MethodHookParam
+
+This is what gets passed to your callback. It has:
+
+- `method` -- the `java.lang.reflect.Method` being hooked
+- `thisObject` -- the instance the method was called on, or `null` for static methods
+- `args` -- the argument array, you can modify these in-place in `beforeMethod`
+- `result` -- the return value, available in `afterMethod`
+- `throwable` -- if the original method threw an exception, it shows up here
+
+The same `MethodHookParam` instance is shared between `beforeMethod` and `afterMethod` within a single call, so any state you set in `beforeMethod` is still there in `afterMethod`.
+
+### HookHandle
+
+Returned by `Sandwitcher.hook()`. Call `handle.unhook()` to remove the hook and restore the original method. Check `handle.isActive` to see if the hook is still installed. Thread-safe -- calling `unhook()` multiple times is fine.
+
+### HookAction
+
+A sealed class with two cases:
+
+- `HookAction.Continue` -- let the original method run
+- `HookAction.ReturnEarly(result)` -- skip the original and return `result` instead
+
+### SandwitcherConfig
+
+Pass this to `Sandwitcher.init()` to configure the SDK. Currently has one option:
+
+- `debugLogging` -- set to `true` to log hook install/uninstall events to logcat under the `Sandwitcher` tag
 
 ## How it works
 
