@@ -1,5 +1,6 @@
 # Sandwitcher
 
+[![Build](https://github.com/IR0NBYTE/Sandwitcher/actions/workflows/build.yml/badge.svg)](https://github.com/IR0NBYTE/Sandwitcher/actions)
 [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.com)
 [![Min SDK](https://img.shields.io/badge/minSdk-24-blue.svg)](https://developer.android.com/about/versions/nougat)
 [![License](https://img.shields.io/badge/license-Apache%202.0-orange.svg)](LICENSE)
