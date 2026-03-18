@@ -1,8 +1,8 @@
-<p align="center">
-  <img src="assets/logo.png" alt="Sandwitcher" width="200" />
-</p>
-
 # Sandwitcher
+
+<p align="center">
+  <img src="assets/logo_git.png" alt="Sandwitcher" width="300" />
+</p>
 
 [![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.com)
 [![Min SDK](https://img.shields.io/badge/minSdk-24-blue.svg)](https://developer.android.com/about/versions/nougat)
@@ -106,6 +106,12 @@ handle.unhook()
 ```
 
 ## Documentation
+
+For more detailed guides, check the [docs/](docs/) folder:
+
+- [Getting Started](docs/getting-started.md) -- setup, first hook, basic patterns
+- [Advanced Usage](docs/advanced-usage.md) -- static methods, native methods, threading, performance
+- [Troubleshooting](docs/troubleshooting.md) -- common issues and how to fix them
 
 ### Sandwitcher
 
